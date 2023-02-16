@@ -40,41 +40,38 @@ if (Test-Path -Path $PROFILE -PathType Leaf)
     Get-Item -Path $PROFILEBAK | Move-Item -Destination $PROFILE
     Write-Host "Profile backup $PROFILEBAK has been restored!"
   }
-}
 
-Write-Host ""
+  Write-Host ""
+}
 
 if (Test-Path -Path $OHMYPOSH -PathType Leaf)
 {
   Write-Host "Oh-My-Posh is installed, uninstalling..."
   Cmd /C $UNOHMYPOSH
+  Write-Host ""
 }
-
-Write-Host ""
 
 if (Test-Path -Path $CHOCO -PathType Leaf)
 {
   Write-Host "Chocolatey is installed, uninstalling..."
   Remove-Item $UNCHOCO -Recurse 
+  Write-Host ""
 }
-
-Write-Host ""
 
 if (Test-Path -Path $HACKFONT -PathType Leaf)
 {
   Write-Host "Hack Nerd Font is present, deleting..."
   Remove-Item $HACKFONT
+  Write-Host ""
 }
-
-Write-Host ""
 
 if (Get-Module -ListAvailable -Name Terminal-Icons)
 {
   Write-Host "Terminal-Icons module is installed, uninstalling..."
   UnInstall-Module -Name Terminal-Icons
+  Write-Host ""
 }
 
-Write-Host ""
 Write-Host "UnInstallation finished."
 Write-Host "Press any key to continue..."
 Cmd /C "Pause >NUL"
