@@ -1,5 +1,5 @@
 # OhMyPosh-Script
-Make your PowerShell pretty using Oh My Posh so that it looks good and functions almost as good as Linux terminal. ;) 
+Make your PowerShell pretty using Oh My Posh so that it looks good and functions almost as good as Linux terminal. 
 
 ## One Line Install (Elevated PowerShell Recommended)
 
