@@ -126,7 +126,7 @@ else
 {
   Write-Host "Clink Setup downloading started..."
   Write-Host "Setup File: $CLINKSETUP"
-  Invoke-RestMethod https://github.com/ozayturay/OhMyPosh-Script/raw/main/clink.1.4.19.57e404_setup.exe -o $CLINKSETUP
+  Invoke-RestMethod https://github.com/ozayturay/OhMyPosh-Script/raw/main/clink_setup.exe -o $CLINKSETUP
   Write-Host "Clink Setup downloading finished!"
 }
 
