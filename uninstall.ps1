@@ -12,13 +12,15 @@ Function Check-RunAsAdministrator()
   }
 }
 
-$CHOCO = $env:PROGRAMDATA + "\chocolatey\bin\choco.exe"
 $OHMYPOSH = $env:LOCALAPPDATA + "\Programs\oh-my-posh\bin\oh-my-posh.exe"
+$CHOCO = $env:PROGRAMDATA + "\chocolatey\bin\choco.exe"
 $HACKFONT = $PSScriptRoot + "\hack-nerdfont.zip"
+$ONELINETHEME = $env:POSH_THEMES_PATH + "\quick-term-oneline.omp.json"
+$CLINKLUA = $env:LOCALAPPDATA + "\clink\oh-my-posh.lua"
 $PROFILEBAK = $PROFILE + ".bak"
 
-$UNCHOCO = $env:PROGRAMDATA + "\chocolatey"
 $UNOHMYPOSH = $env:LOCALAPPDATA + "\Programs\oh-my-posh\unins000.exe /verysilent"
+$UNCHOCO = $env:PROGRAMDATA + "\chocolatey"
  
 Check-RunAsAdministrator
 
@@ -44,17 +46,24 @@ if (Test-Path -Path $PROFILE -PathType Leaf)
   Write-Host ""
 }
 
-if (Test-Path -Path $OHMYPOSH -PathType Leaf)
+if (Get-Module -ListAvailable -Name Terminal-Icons)
 {
-  Write-Host "Oh-My-Posh is installed, uninstalling..."
-  Cmd /C $UNOHMYPOSH
+  Write-Host "Terminal-Icons module is installed, uninstalling..."
+  UnInstall-Module -Name Terminal-Icons
   Write-Host ""
 }
 
-if (Test-Path -Path $CHOCO -PathType Leaf)
+if (Test-Path -Path $CLINKLUA -PathType Leaf)
 {
-  Write-Host "Chocolatey is installed, uninstalling..."
-  Remove-Item $UNCHOCO -Recurse 
+  Write-Host "Clink Lua Script is present, deleting..."
+  Remove-Item $CLINKLUA
+  Write-Host ""
+}
+
+if (Test-Path -Path $ONELINETHEME -PathType Leaf)
+{
+  Write-Host "Quick-Term OneLine Theme is present, deleting..."
+  Remove-Item $ONELINETHEME
   Write-Host ""
 }
 
@@ -65,10 +74,17 @@ if (Test-Path -Path $HACKFONT -PathType Leaf)
   Write-Host ""
 }
 
-if (Get-Module -ListAvailable -Name Terminal-Icons)
+if (Test-Path -Path $CHOCO -PathType Leaf)
 {
-  Write-Host "Terminal-Icons module is installed, uninstalling..."
-  UnInstall-Module -Name Terminal-Icons
+  Write-Host "Chocolatey is installed, uninstalling..."
+  Remove-Item $UNCHOCO -Recurse 
+  Write-Host ""
+}
+
+if (Test-Path -Path $OHMYPOSH -PathType Leaf)
+{
+  Write-Host "Oh-My-Posh is installed, uninstalling..."
+  Cmd /C $UNOHMYPOSH
   Write-Host ""
 }
 

@@ -13,15 +13,7 @@ function sha256 { Get-FileHash -Algorithm SHA256 $args }
 
 function n { notepad $args }
 
-function HKLM: { Set-Location HKLM: }
-function HKCU: { Set-Location HKCU: }
 function Env: { Set-Location Env: }
-
-if (Test-Path "$env:USERPROFILE\Work Folders")
-{
-  New-PSDrive -Name Work -PSProvider FileSystem -Root "$env:USERPROFILE\Work Folders" -Description "Work Folders"
-  function Work: { Set-Location Work: }
-}
 
 function prompt
 { 
@@ -33,12 +25,6 @@ function prompt
   {
     "[" + (Get-Location) + "] $ "
   }
-}
-
-$Host.UI.RawUI.WindowTitle = "PowerShell {0}" -f $PSVersionTable.PSVersion.ToString()
-if ($isAdmin)
-{
-  $Host.UI.RawUI.WindowTitle += " [ADMIN]"
 }
 
 function dirs
@@ -68,21 +54,6 @@ function admin
 
 Set-Alias -Name su -Value admin
 Set-Alias -Name sudo -Value admin
-
-function Edit-Profile
-{
-  if ($host.Name -match "ise")
-  {
-    $psISE.CurrentPowerShellTab.Files.Add($profile.CurrentUserAllHosts)
-  }
-  else
-  {
-    notepad $profile.CurrentUserAllHosts
-  }
-}
-
-Remove-Variable identity
-Remove-Variable principal
 
 Function Test-CommandExists
 {
@@ -127,11 +98,25 @@ elseif (Test-CommandExists sublime_text)
   $EDITOR='sublime_text'
 }
 
+Set-Alias -Name edit -Value $EDITOR
+Set-Alias -Name nano -Value $EDITOR
+Set-Alias -Name vi -Value $EDITOR
 Set-Alias -Name vim -Value $EDITOR
 
+function Edit-Profile
+{
+  if ($host.Name -match "ise")
+  {
+    $psISE.CurrentPowerShellTab.Files.Add($PROFILE)
+  }
+  else
+  {
+    edit $PROFILE
+  }
+}
 
 function ll { Get-ChildItem -Path $pwd -File }
-function g { Set-Location $HOME\Documents\Github }
+function g { Set-Location D:\Code\GIT }
 function gcom
 {
   git add .
@@ -158,24 +143,12 @@ function uptime
   }
 }
 
-function reload-profile
-{
-  & $PROFILE
-}
-
 function find-file($name)
 {
   Get-ChildItem -recurse -filter "*${name}*" -ErrorAction SilentlyContinue | ForEach-Object {
     $place_path = $_.directory
     Write-Output "${place_path}\${_}"
   }
-}
-
-function unzip ($file)
-{
-  Write-Output("Extracting", $file, "to", $pwd)
-  $fullFile = Get-ChildItem -Path $pwd -Filter .\cove.zip | ForEach-Object { $_.FullName }
-  Expand-Archive -Path $fullFile -DestinationPath $pwd
 }
 
 function grep($regex, $dir)
@@ -223,7 +196,10 @@ function pgrep($name)
   Get-Process $name
 }
 
-oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH/quick-term.omp.json" | Invoke-Expression
+Remove-Variable identity
+Remove-Variable principal
+
+oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH/quick-term-oneline.omp.json" | Invoke-Expression
 
 $ChocolateyProfile = "$env:CHOCOLATEYINSTALL\helpers\chocolateyProfile.psm1"
 if (Test-Path($ChocolateyProfile))

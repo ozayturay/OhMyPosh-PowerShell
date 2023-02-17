@@ -1,0 +1,1 @@
+load(io.popen('oh-my-posh init cmd --config "%POSH_THEMES_PATH%/quick-term-oneline.omp.json"'):read("*a"))()

@@ -12,13 +12,15 @@ Function Check-RunAsAdministrator()
   }
 }
 
+$OHMYPOSH = $env:LOCALAPPDATA + "\Programs\oh-my-posh\bin\oh-my-posh.exe"
+$CHOCO = $env:PROGRAMDATA + "\chocolatey\bin\choco.exe"
+$HACKFONT = $PSScriptRoot + "\hack-nerdfont.zip"
+$ONELINETHEME = $env:POSH_THEMES_PATH + "\quick-term-oneline.omp.json"
+$CLINKLUA = $env:LOCALAPPDATA + "\clink\oh-my-posh.lua"
+$PROFILEBAK = $PROFILE + ".bak"
+
 $COREPATH = $env:USERPROFILE + "\Documents\Powershell"
 $DESKPATH = $env:USERPROFILE + "\Documents\WindowsPowerShell"
-
-$CHOCO = $env:PROGRAMDATA + "\chocolatey\bin\choco.exe"
-$OHMYPOSH = $env:LOCALAPPDATA + "\Programs\oh-my-posh\bin\oh-my-posh.exe"
-$HACKFONT = $PSScriptRoot + "\hack-nerdfont.zip"
-$PROFILEBAK = $PROFILE + ".bak"
 
 Check-RunAsAdministrator
 
@@ -99,6 +101,32 @@ else
 
 Write-Host ""
 
+if (Test-Path -Path $ONELINETHEME -PathType Leaf)
+{
+  Write-Host "Quick-Term OneLine Theme is present, skip downloading..."
+}
+else
+{
+  Write-Host "Quick-Term OneLine Theme downloading started..."
+  Invoke-RestMethod https://github.com/ozayturay/OhMyPosh-Script/raw/main/quick-term-oneline.omp.json -o $ONELINETHEME
+  Write-Host "Quick-Term OneLine Theme downloading finished!"
+}
+
+Write-Host ""
+
+if (Test-Path -Path $CLINKLUA -PathType Leaf)
+{
+  Write-Host "Clink Lua Script is present, skip downloading..."
+}
+else
+{
+  Write-Host "Clink Lua Script downloading started..."
+  Invoke-RestMethod https://github.com/ozayturay/OhMyPosh-Script/raw/main/oh-my-posh.lua -o $CLINKLUA
+  Write-Host "Clink Lua Script downloading finished!"
+}
+
+Write-Host ""
+
 if (Get-Module -ListAvailable -Name Terminal-Icons)
 {
   Write-Host "Terminal-Icons module is installed, skipping..."
@@ -122,6 +150,7 @@ else
   Write-Host "Backing up profile..."
   Get-Item -Path $PROFILE | Move-Item -Destination $PROFILEBAK
 } 
+
 Write-Host "Replacing profile..."
 Invoke-RestMethod https://github.com/ozayturay/OhMyPosh-Script/raw/main/Microsoft.PowerShell_profile.ps1 -o $PROFILE
 Write-Host "Profile $PROFILE has been replaced!"
