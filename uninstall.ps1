@@ -12,15 +12,21 @@ Function Check-RunAsAdministrator()
   }
 }
 
-$OHMYPOSH = $env:LOCALAPPDATA + "\Programs\oh-my-posh\bin\oh-my-posh.exe"
-$CHOCO = $env:PROGRAMDATA + "\chocolatey\bin\choco.exe"
+$CHOCO = "$env:ProgramData\chocolatey\bin\choco.exe"
+
+$OHMYPOSH = "$env:LocalAppData\Programs\oh-my-posh\bin\oh-my-posh.exe"
+$ONELINETHEME = "$env:POSH_THEMES_PATH\quick-term-oneline.omp.json"
+
+$CLINK = "$env:ProgramFiles(x86)\clink\clink.exe"
+$CLINKSETUP = $PSScriptRoot + "\clink.1.4.19.57e404_setup.exe"
+$CLINKLUA = "$env:LocalAppData\clink\oh-my-posh.lua"
+
 $HACKFONT = $PSScriptRoot + "\hack-nerdfont.zip"
-$ONELINETHEME = $env:POSH_THEMES_PATH + "\quick-term-oneline.omp.json"
-$CLINKLUA = $env:LOCALAPPDATA + "\clink\oh-my-posh.lua"
 $PROFILEBAK = $PROFILE + ".bak"
 
-$UNOHMYPOSH = $env:LOCALAPPDATA + "\Programs\oh-my-posh\unins000.exe /verysilent"
-$UNCHOCO = $env:PROGRAMDATA + "\chocolatey"
+$UNCHOCO = "$env:ProgramData\chocolatey"
+$UNOHMYPOSH = "$env:LocalAppData\Programs\oh-my-posh\unins000.exe /verysilent"
+$UNCLINK = "$env:ProgramFiles(x86)\clink\clink_uninstall_1.4.19.57e404.exe /S"
  
 Check-RunAsAdministrator
 
@@ -53,10 +59,31 @@ if (Get-Module -ListAvailable -Name Terminal-Icons)
   Write-Host ""
 }
 
+if (Test-Path -Path $HACKFONT -PathType Leaf)
+{
+  Write-Host "Hack Nerd Font is present, deleting..."
+  Remove-Item $HACKFONT
+  Write-Host ""
+}
+
+if (Test-Path -Path $CLINKSETUP -PathType Leaf)
+{
+  Write-Host "Clink Setup is present, deleting..."
+  Remove-Item $CLINKSETUP
+  Write-Host ""
+}
+
 if (Test-Path -Path $CLINKLUA -PathType Leaf)
 {
   Write-Host "Clink Lua Script is present, deleting..."
   Remove-Item $CLINKLUA
+  Write-Host ""
+}
+
+if (Test-Path -Path $CLINK -PathType Leaf)
+{
+  Write-Host "Clink is installed, uninstalling..."
+  Cmd /C $UNCLINK
   Write-Host ""
 }
 
@@ -67,10 +94,10 @@ if (Test-Path -Path $ONELINETHEME -PathType Leaf)
   Write-Host ""
 }
 
-if (Test-Path -Path $HACKFONT -PathType Leaf)
+if (Test-Path -Path $OHMYPOSH -PathType Leaf)
 {
-  Write-Host "Hack Nerd Font is present, deleting..."
-  Remove-Item $HACKFONT
+  Write-Host "Oh-My-Posh is installed, uninstalling..."
+  Cmd /C $UNOHMYPOSH
   Write-Host ""
 }
 
@@ -78,13 +105,6 @@ if (Test-Path -Path $CHOCO -PathType Leaf)
 {
   Write-Host "Chocolatey is installed, uninstalling..."
   Remove-Item $UNCHOCO -Recurse 
-  Write-Host ""
-}
-
-if (Test-Path -Path $OHMYPOSH -PathType Leaf)
-{
-  Write-Host "Oh-My-Posh is installed, uninstalling..."
-  Cmd /C $UNOHMYPOSH
   Write-Host ""
 }
 

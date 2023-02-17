@@ -12,11 +12,15 @@ Function Check-RunAsAdministrator()
   }
 }
 
-$OHMYPOSH = $env:LOCALAPPDATA + "\Programs\oh-my-posh\bin\oh-my-posh.exe"
 $CHOCO = $env:PROGRAMDATA + "\chocolatey\bin\choco.exe"
-$HACKFONT = $PSScriptRoot + "\hack-nerdfont.zip"
+
+$OHMYPOSH = $env:LOCALAPPDATA + "\Programs\oh-my-posh\bin\oh-my-posh.exe"
 $ONELINETHEME = $env:POSH_THEMES_PATH + "\quick-term-oneline.omp.json"
+
+$CLINKSETUP = $PSScriptRoot + "\clink.1.4.19.57e404_setup.exe"
 $CLINKLUA = $env:LOCALAPPDATA + "\clink\oh-my-posh.lua"
+
+$HACKFONT = $PSScriptRoot + "\hack-nerdfont.zip"
 $PROFILEBAK = $PROFILE + ".bak"
 
 $COREPATH = $env:USERPROFILE + "\Documents\Powershell"
@@ -59,19 +63,6 @@ if (!(Test-Path -Path $PROFILE -PathType Leaf))
 
 Write-Host ""
 
-if (Test-Path -Path $OHMYPOSH -PathType Leaf)
-{
-  Write-Host "Oh-My-Posh is installed, skipping..."
-}
-else
-{
-  Write-Host "Oh-My-Posh installation started..."
-  Invoke-Expression ((New-Object System.Net.WebClient).DownloadString("https://ohmyposh.dev/install.ps1"))
-  Write-Host "Oh-My-Posh installation finished!"
-}
-
-Write-Host ""
-
 if (Test-Path -Path $CHOCO -PathType Leaf)
 {
   Write-Host "Chocolatey is installed, skipping..."
@@ -84,19 +75,16 @@ else
 }
 
 Write-Host ""
-Write-Host "!!! Please install a Nerd Font of your choice and configure your Terminal Program to use it."
-Write-Host "!!! Hack Nerd Font will be downloaded now as a sample Nerd Font for your convenience..."
-Write-Host ""
 
-if (Test-Path -Path $HACKFONT -PathType Leaf)
+if (Test-Path -Path $OHMYPOSH -PathType Leaf)
 {
-  Write-Host "Hack Nerd Font is present, skip downloading..."
+  Write-Host "Oh-My-Posh is installed, skipping..."
 }
 else
 {
-  Write-Host "Hack Nerd Font downloading started..."
-  Invoke-RestMethod https://github.com/ryanoasis/nerd-fonts/releases/download/v2.3.3/Hack.zip -o $HACKFONT
-  Write-Host "Hack Nerd Font downloading finished!"
+  Write-Host "Oh-My-Posh installation started..."
+  Invoke-Expression ((New-Object System.Net.WebClient).DownloadString("https://ohmyposh.dev/install.ps1"))
+  Write-Host "Oh-My-Posh installation finished!"
 }
 
 Write-Host ""
@@ -114,6 +102,22 @@ else
 
 Write-Host ""
 
+if (Test-Path -Path $CLINKSETUP -PathType Leaf)
+{
+  Write-Host "Clink Setup is present, skip downloading..."
+}
+else
+{
+  Write-Host "Clink Setup downloading started..."
+  Invoke-RestMethod https://github.com/ozayturay/OhMyPosh-Script/raw/main/clink.1.4.19.57e404_setup.exe -o $CLINKSETUP
+  Write-Host "Clink Setup downloading finished!"
+  Write-Host "Installing Clink started..."
+  Cmd /C $CLINKSETUP + "/S /ALLUSERS=1"
+  Write-Host "Installing Clink finished!"
+}
+
+Write-Host ""
+
 if (Test-Path -Path $CLINKLUA -PathType Leaf)
 {
   Write-Host "Clink Lua Script is present, skip downloading..."
@@ -123,6 +127,22 @@ else
   Write-Host "Clink Lua Script downloading started..."
   Invoke-RestMethod https://github.com/ozayturay/OhMyPosh-Script/raw/main/oh-my-posh.lua -o $CLINKLUA
   Write-Host "Clink Lua Script downloading finished!"
+}
+
+Write-Host ""
+Write-Host "!!! Please install a Nerd Font of your choice and configure your Terminal Program to use it."
+Write-Host "!!! Hack Nerd Font will be downloaded now as a sample Nerd Font for your convenience..."
+Write-Host ""
+
+if (Test-Path -Path $HACKFONT -PathType Leaf)
+{
+  Write-Host "Hack Nerd Font is present, skip downloading..."
+}
+else
+{
+  Write-Host "Hack Nerd Font downloading started..."
+  Invoke-RestMethod https://github.com/ryanoasis/nerd-fonts/releases/download/v2.3.3/Hack.zip -o $HACKFONT
+  Write-Host "Hack Nerd Font downloading finished!"
 }
 
 Write-Host ""
