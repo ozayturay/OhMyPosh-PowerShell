@@ -112,7 +112,7 @@ else
 {
   Write-Host "Quick-Term OneLine Theme downloading started..."
   Write-Host "Theme File: $ONELINETHEME"
-  Invoke-RestMethod https://github.com/ozayturay/OhMyPosh-Script/raw/main/quick-term-oneline.omp.json -o $ONELINETHEME
+  Invoke-RestMethod https://github.com/ozayturay/OhMyPosh-PowerShell/raw/main/quick-term-oneline.omp.json -o $ONELINETHEME
   Write-Host "Quick-Term OneLine Theme downloading finished!"
 }
 
@@ -126,7 +126,7 @@ else
 {
   Write-Host "Clink Setup downloading started..."
   Write-Host "Setup File: $CLINKSETUP"
-  Invoke-RestMethod https://github.com/ozayturay/OhMyPosh-Script/raw/main/clink_setup.exe -o $CLINKSETUP
+  Invoke-RestMethod https://github.com/ozayturay/OhMyPosh-PowerShell/raw/main/clink_setup.exe -o $CLINKSETUP
   Write-Host "Clink Setup downloading finished!"
 }
 
@@ -154,7 +154,7 @@ else
 {
   Write-Host "Clink Lua Script downloading started..."
   Write-Host "Script File: $CLINKLUA"
-  Invoke-RestMethod https://github.com/ozayturay/OhMyPosh-Script/raw/main/oh-my-posh.lua -o $CLINKLUA
+  Invoke-RestMethod https://github.com/ozayturay/OhMyPosh-PowerShell/raw/main/oh-my-posh.lua -o $CLINKLUA
   Write-Host "Clink Lua Script downloading finished!"
 }
 
@@ -204,7 +204,7 @@ else
 } 
 
 Write-Host "Replacing profile..."
-Invoke-RestMethod https://github.com/ozayturay/OhMyPosh-Script/raw/main/Microsoft.PowerShell_profile.ps1 -o $PROFILE
+Invoke-RestMethod https://github.com/ozayturay/OhMyPosh-PowerShell/raw/main/Microsoft.PowerShell_profile.ps1 -o $PROFILE
 Write-Host "Profile $PROFILE has been replaced!"
 Write-Host ""
 
